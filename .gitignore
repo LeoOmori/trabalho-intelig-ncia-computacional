@@ -1,2 +1,2 @@
-/dataset_cartas
-/dataset_cropped
+dataset_cartas/*.bmp
+dataset_cropped/*.bmp
