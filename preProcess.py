@@ -1,8 +1,9 @@
-"""Script para fazer o pre processamento do dataset
+"""
+Script para fazer o pre processamento do dataset
 de cartas usado no trabalho de Inteligência Computacional.
 Para usar este script é necessário somente rodar
 python preProcess.py, e as imagens serão geradas na pasta
-/dataset_cropped
+database/dataset_cropped
 """
 
 import os
@@ -12,8 +13,8 @@ import matplotlib.pyplot as plt
 
 ## Função para carregar o dataset de cartas
 def loadDataSet():
-    path = os.getcwd() + "/dataset_cartas"
-    writePath = os.getcwd() + "/dataset_cropped"
+    path = os.getcwd() + "/database/dataset_cartas"
+    writePath = os.getcwd() + "/database/dataset_cropped"
     files = os.listdir(path)
     for file in files:
         print(file)

@@ -10,12 +10,13 @@ Robson / Leonardo
 ## Install dependencies
 
 ```
-python -m pip install numpy
-pyhton -m pip install opencv-python
-python -m pip install matplotlib
+pip install numpy
+pip install opencv-python
+pip install matplotlib
+pip install scikit-image
 ```
 
 ## Database Brazilian Forensic Letter Database `BFL_Database`
 
 - Download database `https://www.inf.ufpr.br/lesoliveira/download/BFL_Database.zip`
-- Copy images to directory `dataset_cartas/`
+- Copy images to directory `dataset/dataset_cartas/`
