@@ -11,6 +11,7 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 
+
 ## Função para carregar o dataset de cartas
 def loadDataSet():
     path = os.getcwd() + "/database/dataset_cartas"
@@ -21,7 +22,8 @@ def loadDataSet():
         try:
             img = cv2.imread(path + "/" + file)
             crop_img = cropImage(img)   
-            cv2.imwrite(os.path.join(writePath , file),crop_img)
+            resized = cv2.resize(crop_img, (2000, 3000)) 
+            cv2.imwrite(os.path.join(writePath , file),resized)
         except:
             print("error")
     
