@@ -45,15 +45,17 @@ voting_clf = VotingClassifier(estimators=[('knn', knn_clf), ('svm', svm_clf), ('
 voting_clf.fit(X_train, y_train)
 y_pred = voting_clf.predict(X_test)
 print('Accuracy: ', accuracy_score(y_test, y_pred))
+## save confusion matrix as confusion_matrix.jpg
 
-## make a confusion matrix in mat plot lib
-# import matplotlib.pyplot as plt
-# import seaborn as sns
-# from sklearn.metrics import confusion_matrix
-# cm = confusion_matrix(y_test, y_pred)
-# sns.heatmap(cm, annot=True)
-# ## save image as confusion_matrix.jpg
-# plt.savefig('confusion_matrix.jpg')
+
+# make a confusion matrix in mat plot lib
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, y_pred)
+sns.heatmap(cm, annot=True)
+## save image as confusion_matrix.jpg
+plt.savefig('confusion_matrix.jpg')
 
 
 
