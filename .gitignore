@@ -1,2 +1,3 @@
 database/dataset_cartas/*.bmp
 database/dataset_cropped/*.bmp
+database/dataset_processed/*.bmp

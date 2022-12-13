@@ -1,48 +1,60 @@
-"""
-Script para fazer o pre processamento do dataset
-de cartas usado no trabalho de Inteligência Computacional.
-Para usar este script é necessário somente rodar
-python preProcess.py, e as imagens serão geradas na pasta
-database/dataset_cropped
-"""
-
+import cv2
 import os
 import numpy as np
-import cv2
-import matplotlib.pyplot as plt
+
+def mask (image):
+    ## remove noise from image
+    kernel = np.ones((5,5),np.uint8)
+    opening = cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel)
 
 
-## Função para carregar o dataset de cartas
-def loadDataSet():
-    path = os.getcwd() + "/database/dataset_cartas"
-    writePath = os.getcwd() + "/database/dataset_cropped"
-    files = os.listdir(path)
-    for file in files:
-        print(file)
-        try:
-            img = cv2.imread(path + "/" + file)
-            crop_img = cropImage(img)   
-            resized = cv2.resize(crop_img, (2000, 3000)) 
-            cv2.imwrite(os.path.join(writePath , file),resized)
-        except:
-            print("error")
+    # Find the coordinates of all white pixels in the image
+    coords = cv2.findNonZero(opening )
+
+    # Calculate the bounding box from the coordinates
+    x, y, w, h = cv2.boundingRect(coords)
+
+    # crop the image with the bounding_box
+    cropped = image[y:y+h, x:x+w]
     
-# Função para cortar a imagem
-def cropImage(img):
-    # converte para escala de cinza
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    # aplica um blur para reduzir o ruido
-    retval, thresh_gray = cv2.threshold(gray, thresh=100, maxval=255, type=cv2.THRESH_BINARY)
-    # encontra os contornos
-    points = np.argwhere(thresh_gray==0) # encontrar todos os pontos pretos
-    points = np.fliplr(points) # salvar os pontos em coordenadas x,y
-    x, y, w, h = cv2.boundingRect(points) # encontrar o retangulo que envolve todos os pontos
-    x, y, w, h = x-10, y-10, w+20, h+20 # adicionar um pouco de margem
-    crop = img[y:y+h, x:x+w] # cortar a imagem
-    return crop
+    # resize image to 2000x3000
+    newImg = cv2.resize(cropped, (2000, 2000), interpolation=cv2.INTER_AREA)
 
-def main():
-    loadDataSet()
+    return newImg
 
-if __name__=="__main__":
-    main()
+def preprocess_image(image_path, output_path):
+  # Load the image from the given path
+    img = cv2.imread(image_path,cv2.IMREAD_GRAYSCALE)
+
+    print(image_path)
+    # Apply global binarization using Otsu's algorithm
+    threshold, binarized = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+    # Use the Sobel operator to detect contours
+    contours = cv2.Sobel(binarized, cv2.CV_8U, 1, 0, ksize=3)
+    # resize image to 2500x3500
+    newImg = cv2.resize(contours, (2500, 3500), interpolation=cv2.INTER_AREA)
+    cropped = mask(newImg)
+    # Save the preprocessed image to the specified output path
+    cv2.imwrite(output_path, cropped)
+
+
+# Path to the directory containing the original images
+input_dir = "database/dataset_cartas"
+
+# Path to the directory where the preprocessed images should be saved
+output_dir = "database/dataset_cropped"
+
+# Create the output directory if it doesn't already exist
+if not os.path.exists(output_dir):
+  os.makedirs(output_dir)
+
+# Iterate over the files in the input directory
+for filename in os.listdir(input_dir):  
+    if filename.endswith(".bmp"):
+        # Get the full path to the input and output files
+        input_path = os.path.join(input_dir, filename)
+        output_path = os.path.join(output_dir, filename)
+
+        # Preprocess the image and save the result
+        preprocess_image(input_path, output_path)
