@@ -9,14 +9,14 @@ from sklearn.model_selection import train_test_split
 
 
 # Import training data
-data = pd.read_csv('lbp_features2.csv')
-print('lbp_features2.csv')
+data = pd.read_csv('lbp_features.csv')
+print('lbp_features.csv')
 ## combine data with newData with pandas concat
 y = data.iloc[:, -1]
 
 
 # train split with train_test_split
-X_train, X_test, y_train, y_test = train_test_split(data, y,test_size=0.4, random_state=1, stratify=y)
+X_train, X_test, y_train, y_test = train_test_split(data, y,test_size=0.4,  stratify=y)
 
 ## standardize data
 from sklearn.preprocessing import StandardScaler
@@ -32,7 +32,7 @@ X_test = sc.transform(X_test)
 #euclidean distance
 knn_clf = KNeighborsClassifier(n_neighbors=3, weights='distance')
 svm_clf = SVC(kernel='linear', gamma='auto')
-rf_clf = RandomForestClassifier()
+rf_clf = RandomForestClassifier(n_estimators=100, random_state=2)
 
 
 
@@ -48,14 +48,14 @@ print('Accuracy: ', accuracy_score(y_test, y_pred))
 ## save confusion matrix as confusion_matrix.jpg
 
 
-# make a confusion matrix in mat plot lib
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.metrics import confusion_matrix
-cm = confusion_matrix(y_test, y_pred)
-sns.heatmap(cm, annot=True)
-## save image as confusion_matrix.jpg
-plt.savefig('confusion_matrix.jpg')
+# # make a confusion matrix in mat plot lib
+# import matplotlib.pyplot as plt
+# import seaborn as sns
+# from sklearn.metrics import confusion_matrix
+# cm = confusion_matrix(y_test, y_pred)
+# sns.heatmap(cm, annot=True)
+# ## save image as confusion_matrix.jpg
+# plt.savefig('confusion_matrix.jpg')
 
 
 
