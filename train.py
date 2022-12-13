@@ -30,7 +30,7 @@ X_test = sc.transform(X_test)
 
 # Create the three classifiers
 #euclidean distance
-knn_clf = KNeighborsClassifier(n_neighbors=1)
+knn_clf = KNeighborsClassifier(n_neighbors=3, weights='distance')
 svm_clf = SVC(kernel='linear', gamma='auto')
 rf_clf = RandomForestClassifier()
 
@@ -47,13 +47,13 @@ y_pred = voting_clf.predict(X_test)
 print('Accuracy: ', accuracy_score(y_test, y_pred))
 
 ## make a confusion matrix in mat plot lib
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.metrics import confusion_matrix
-cm = confusion_matrix(y_test, y_pred)
-sns.heatmap(cm, annot=True)
-## save image as confusion_matrix.jpg
-plt.savefig('confusion_matrix.jpg')
+# import matplotlib.pyplot as plt
+# import seaborn as sns
+# from sklearn.metrics import confusion_matrix
+# cm = confusion_matrix(y_test, y_pred)
+# sns.heatmap(cm, annot=True)
+# ## save image as confusion_matrix.jpg
+# plt.savefig('confusion_matrix.jpg')
 
 
 
